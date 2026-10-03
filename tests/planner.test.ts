@@ -43,3 +43,17 @@ test('origin validation supports public hosts behind Next proxy and rejects fore
  assert.equal(allowedOrigin(new Request('http://localhost:3000/api/plan',{headers:{host:'dublinsaver.vercel.app',origin:'https://other.example'}})),false);
  assert.equal(allowedOrigin(new Request('http://localhost:3000/api/plan',{headers:{origin:'null'}})),false);
 });
+
+
+import {restoreSession} from '../lib/plan-session.ts';
+test('refresh restores applied preferences, alternative and checked items without trusting saved totals',()=>{
+ const applied={...defaults,diet:'vegan' as const,exclusions:['gluten' as const]};
+ const result=optimise(applied),alternative=result.plans[1];
+ const saved=restoreSession(JSON.stringify({version:1,applied,draft:{...applied,budget:50},selectedId:alternative.id,checked:[alternative.basket[0].id,alternative.basket[0].id,'unknown'],hasPlan:true,total:0}));
+ assert.ok(saved);assert.equal(saved.hasPlan,true);assert.equal(saved.dirty,true);assert.equal(saved.draft.budget,50);assert.equal(saved.result.constraints.budget,45);assert.equal(saved.result.plans[saved.selected].id,alternative.id);assert.deepEqual(saved.checked,[alternative.basket[0].id]);assert.equal(saved.result.plans[saved.selected].total,alternative.total);
+});
+test('session restoration handles corrupt, obsolete, invalid and unaffordable plans',()=>{
+ for(const raw of [null,'{','null',JSON.stringify({version:2}),JSON.stringify({version:1,applied:{...defaults,diet:'invalid'}})])assert.equal(restoreSession(raw),null);
+ const saved=restoreSession(JSON.stringify({version:1,applied:{...defaults,budget:0},draft:{...defaults,dinners:99},hasPlan:true,selectedId:'missing',checked:['rice']}));
+ assert.ok(saved);assert.equal(saved.result.plans.length,0);assert.equal(saved.draft.budget,0);assert.equal(saved.dirty,false);assert.deepEqual(saved.checked,[]);
+});
