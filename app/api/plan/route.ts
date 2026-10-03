@@ -1,13 +1,13 @@
 import { defaults, validate, optimise } from '@/lib/planner';
-import { env } from 'cloudflare:workers';
+export const runtime = 'nodejs';
+export const maxDuration = 30;
 const headers={'Cache-Control':'no-store'};
 const constraintsSchema={type:'object',additionalProperties:false,required:Object.keys(defaults),properties:Object.fromEntries(Object.entries(defaults).map(([key,value])=>[key,{type:typeof value==='number'?'number':typeof value==='boolean'?'boolean':'string'}]))};
 const extractionSchema={type:'object',additionalProperties:false,required:['constraints','notes'],properties:{constraints:constraintsSchema,notes:{type:'string'}}};
 const explanationSchema={type:'object',additionalProperties:false,required:['explanation'],properties:{explanation:{type:'string'}}};
 async function completion(system:string,user:string,schema:unknown=explanationSchema){
- const runtime=env as unknown as Record<string,string>;
- const key=runtime.AZURE_OPENAI_API_KEY||process.env.AZURE_OPENAI_API_KEY;
- const endpoint=runtime.AZURE_OPENAI_ENDPOINT||process.env.AZURE_OPENAI_ENDPOINT;
+ const key=process.env.AZURE_OPENAI_API_KEY;
+ const endpoint=process.env.AZURE_OPENAI_ENDPOINT;
  if(!key||!endpoint)throw Error('AI is not configured. Use the editable planner below.');
  const response=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json','api-key':key},body:JSON.stringify({messages:[{role:'system',content:system},{role:'user',content:user}],response_format:{type:'json_schema',json_schema:{name:'dublinsaver_response',strict:true,schema}},temperature:0.1,max_tokens:700}),signal:AbortSignal.timeout(25000)});
  if(!response.ok)throw Error('AI is temporarily unavailable. You can still build a plan using the fields below.');
