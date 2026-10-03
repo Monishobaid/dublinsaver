@@ -1,0 +1,156 @@
+{
+  "rice": {
+    "code": "11-861",
+    "food": "Rice, white, long grain, raw",
+    "per100g": {
+      "kcal": 355.0,
+      "protein": 6.7,
+      "carbs": 85.1,
+      "fat": 1.0,
+      "fibre": 1.1
+    }
+  },
+  "pasta": {
+    "code": "11-718",
+    "food": "Pasta, wholewheat, spaghetti, dried, raw",
+    "per100g": {
+      "kcal": 329.0,
+      "protein": 12.6,
+      "carbs": 68.3,
+      "fat": 2.5,
+      "fibre": 11.7
+    }
+  },
+  "lentils": {
+    "code": "13-657",
+    "food": "Lentils, red, split, dried, raw",
+    "per100g": {
+      "kcal": 311.0,
+      "protein": 25.6,
+      "carbs": 51.2,
+      "fat": 1.8,
+      "fibre": 17.4
+    }
+  },
+  "chickpeas": {
+    "code": "13-670",
+    "food": "Beans, chick peas, canned, re-heated, drained",
+    "per100g": {
+      "kcal": 129.0,
+      "protein": 8.4,
+      "carbs": 18.3,
+      "fat": 3.0,
+      "fibre": 7.1
+    }
+  },
+  "tomatoes": {
+    "code": "13-530",
+    "food": "Tomatoes, canned, whole contents",
+    "per100g": {
+      "kcal": 19.0,
+      "protein": 1.1,
+      "carbs": 3.8,
+      "fat": 0.1,
+      "fibre": 0.8
+    }
+  },
+  "veg": {
+    "code": "13-527",
+    "food": "Peas, frozen, raw",
+    "per100g": {
+      "kcal": 68.0,
+      "protein": 5.3,
+      "carbs": 10.7,
+      "fat": 0.7,
+      "fibre": 5.3
+    }
+  },
+  "coconut": {
+    "code": "14-889",
+    "food": "Coconut milk, retail",
+    "per100g": {
+      "kcal": 169.0,
+      "protein": 1.1,
+      "carbs": 3.3,
+      "fat": 16.9,
+      "fibre": 0.4
+    }
+  },
+  "oil": {
+    "code": "17-045",
+    "food": "Oil, sunflower",
+    "per100g": {
+      "kcal": 899.0,
+      "protein": 0,
+      "carbs": 0.0,
+      "fat": 99.9,
+      "fibre": 0.0
+    }
+  },
+  "spice": {
+    "code": "13-876",
+    "food": "Curry powder",
+    "per100g": {
+      "kcal": 233.0,
+      "protein": 9.5,
+      "carbs": 26.1,
+      "fat": 10.8,
+      "fibre": null
+    }
+  },
+  "beans": {
+    "code": "13-660",
+    "food": "Beans, red kidney, canned in water, re-heated, drained",
+    "per100g": {
+      "kcal": 100.0,
+      "protein": 8.6,
+      "carbs": 15.1,
+      "fat": 1.0,
+      "fibre": 6.8
+    }
+  },
+  "eggs": {
+    "code": "12-937",
+    "food": "Eggs, chicken, whole, raw",
+    "per100g": {
+      "kcal": 131.0,
+      "protein": 12.6,
+      "carbs": 0,
+      "fat": 9.0,
+      "fibre": 0.0
+    }
+  },
+  "cheese": {
+    "code": "12-346",
+    "food": "Cheese, Cheddar, English",
+    "per100g": {
+      "kcal": 416.0,
+      "protein": 25.4,
+      "carbs": 0.1,
+      "fat": 34.9,
+      "fibre": 0.0
+    }
+  },
+  "tuna": {
+    "code": "16-416",
+    "food": "Tuna, canned in brine, drained",
+    "per100g": {
+      "kcal": 109.0,
+      "protein": 24.9,
+      "carbs": 0.0,
+      "fat": 1.0,
+      "fibre": 0.0
+    }
+  },
+  "chicken": {
+    "code": "18-290",
+    "food": "Chicken, light meat, raw",
+    "per100g": {
+      "kcal": 106.0,
+      "protein": 24.0,
+      "carbs": 0.0,
+      "fat": 1.1,
+      "fibre": 0.0
+    }
+  }
+}
