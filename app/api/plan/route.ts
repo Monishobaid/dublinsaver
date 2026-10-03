@@ -1,4 +1,4 @@
-import { defaults, validate, optimise } from '@/lib/planner';
+import { defaults, validate, optimise, money } from '@/lib/planner';
 export const runtime = 'nodejs';
 export const maxDuration = 30;
 const headers={'Cache-Control':'no-store'};
@@ -28,8 +28,13 @@ export async function POST(request:Request){
  if(body.action==='plan')return Response.json(optimise(validate(body.constraints)),{headers});
  if(body.action==='explain'){
  const result=optimise(validate(body.constraints));const chosen=result.plans.find(p=>p.id===body.planId)||result.plans[0];if(!chosen)throw Error('No feasible plan to explain.');
- const data=await completion('Explain this computed dinner budget plan in JSON {"explanation": string}. Maximum 70 words. Input money is integer euro cents; express all amounts in euros with € symbol. Reserved transport is money set aside, not a safety guarantee. Never recalculate or invent costs, retailers, live availability, nutrition or routes. Prices and walking time are illustrative. Explain the chosen cost/time trade-off, protected transport and buffer. Note it covers dinners only.',JSON.stringify({constraints:result.constraints,plan:chosen}));
- return Response.json({explanation:String(data.explanation||'').slice(0,900)},{headers});
+ const facts=`Groceries cost ${money(chosen.groceries)}, transport is ${money(chosen.transport)}, and the optional meal allowance is ${money(chosen.meal)}. Total spending is ${money(chosen.total)}, leaving ${money(chosen.remaining)} including your ${money(chosen.reserve)} protected buffer. This covers ${result.constraints.dinners} dinners only. Prices and the ${chosen.walk}-minute shop walk are illustrative.`;
+ // The model selects a qualitative emphasis; only audited, computed text is returned.
+ const emphasisSchema={type:'object',additionalProperties:false,required:['emphasis'],properties:{emphasis:{type:'string',enum:['cost','convenience','variety']}}};
+ const data=await completion('Choose a qualitative emphasis for this budget plan. Return JSON with emphasis: cost, convenience, or variety. Do not produce prose or numbers.',JSON.stringify({shop:chosen.shop,style:chosen.style,walk:chosen.walk}),emphasisSchema);
+ const notes={cost:'Compare the alternatives to see the cost and walking-time trade-off.',convenience:'The walking limit is respected; check the actual route before shopping.',variety:'The dinner rotation uses overlapping ingredients to limit the number of packs you need.'};
+ const note=notes[data.emphasis as keyof typeof notes]||notes.cost;
+ return Response.json({explanation:`${facts} ${note}`},{headers});
  }
  throw Error('Unknown action.');
  }catch(e){return Response.json({error:e instanceof SyntaxError?'Could not read the response. Please try again.':e instanceof Error?e.message:'Unable to build this plan.'},{status:400,headers});}
